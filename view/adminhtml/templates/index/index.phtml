@@ -1,0 +1,397 @@
+<?php
+/**
+ * @var $block \Engepecas\Diagramas\Block\Adminhtml\Index\Index
+ */
+
+$bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Index');
+$upload_bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Booking');
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
+$baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
+$caminho = $baseURL_l.'pub/media/img/';
+?>
+</div>
+</div>
+</div>
+    <style>
+    #selecao {
+        border: 2px #aaf solid;
+        position: absolute;
+        display: none;
+        background-color: rgba(255, 0, 0, 0.3);
+    }
+
+    .selecao:before {
+        content: ' ';
+    }
+
+    #salva {
+        display: none;
+    }
+
+    #imagem {
+        position: relative;
+        display: flex;
+    }
+
+    #Enviar {
+        display: none;
+    }
+
+    #uploadPreview {
+        width: auto;
+        height: auto;
+    }
+
+    .page-header{
+        margin-top: 0 !important;
+        padding: 0 3rem !important;
+    }
+    #description{
+        margin-top: 0 !important;
+        padding: 0 0 0 !important;
+    }
+
+    form .form_ {
+        font-size: 1.5em;
+    }
+
+    .small {
+        font-size: 1.5em;
+    }
+
+    /*form{
+        font-size: 1em;
+    }*/
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<?php
+$url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
+?>
+</main>
+<div id="imagem">
+    <img id="uploadPreview" />
+    <div id="selecao"></div>
+</div>
+<main id="anchor-content" class="page-content">
+<div class="row">
+    <div style="text-align: center;">
+        <div class="col-12">
+            <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data" style="font-size: 1.5em;">
+                <input id="uploadImage" type="file" class="form-control-file" name="myPhoto"
+                    onchange="PreviewImage();" />
+            </form>
+        </div>
+    </div>
+</div>
+
+</br>
+<?php
+$img = '';
+$img_tmp = '';
+$img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";
+$motor_diagrama = $bloco->getIdMotorDiagrama();
+$url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
+
+?>
+
+<div class="row">
+    <div class="col-12">
+        <form action="<?=$url?>">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label style="font-size: 1.5em"><b>SKU</b></label>
+                    <small class="small">(<b>CODIGO DA PEÇA</b>)</small>
+                    <input type="text" class="form-control form_" name="sku" id="sku">
+                    <input type="hidden" class="form-control" name="titulo" id="titulo">
+                    <input type="hidden" class="form-control" name="id" id="id">
+                    <input type="hidden" class="form-control" name="link" id="link">
+                    <input type="hidden" class="form-control" name="price" id="price">
+                    <input type="hidden" class="form-control" name="entity_id" id="entity_id">
+                    <label style="font-size: 1.5em"><b>Produto</b></label>
+                    <small>(<b>PRODUTO ONDE VAI MOSTRAR O DIAGRAMA</b>)</small>
+                    <select class="form-control form_" id="id_prod">
+                        <?php
+                            echo "<option  value='0'>Escolha uma opção</option>";
+                        foreach($motor_diagrama as $value){
+                            $id = $value['entity_id'];
+                            $valor = $value['VALUE'];
+                            echo "<option  value='$id'>$valor</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <button type="button" class="action- scalable action-secondary add" id="add">Adicionar</button>
+            <button type="button" class="action-default primary" id="slv">Salvar</button>
+        </form><br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div id="tabela"> </div>
+    </div>
+    <div class="col-12">
+        <form action="<?=$url?>" method="POST" id="upload">
+            <div id="info">
+            </div>
+            <button type="submit" id="salva" class="btn btn-primary text-white">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<script>
+
+let img_cam = document.querySelector('#uploadImage');
+let sku = document.getElementById('sku');
+let id_prod = document.getElementById('id_prod');
+let img_motor;
+let tr;
+let left_;
+let top_;
+
+
+function PreviewImage() {
+    let imagem = document.getElementById("uploadImage");
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(imagem.files[0]);
+    oFReader.onload = function(oFREvent) {
+        document.getElementById("uploadPreview").src = oFREvent.target.result;
+        imagem.style.display = 'none';
+    };
+};
+
+require(['jquery', 'jquery/ui'], function($) {
+
+    var form = $("#upload")[0];
+
+    $("#uploadImage").on("change", function(event) {
+        var data = new FormData(form);
+        $.ajax({
+            url: form.action,
+            data: data,
+            contentType: false,
+            processData: false,
+            type: form.method,
+            success: function(data) {
+                console.log(data);
+                img_motor = data;
+            }
+        });
+        return false;
+    });
+});
+
+
+
+/*** seleciona area da imagem e pega as coordenadas */
+let img = document.getElementById('uploadPreview');
+let selecao = document.getElementById('selecao');
+
+function arrastador(e) {
+    var rect = e.target.getBoundingClientRect();
+    e.preventDefault();
+    selecao.style.width = (e.pageX - rect.left - inicio.x) + 'px';
+    selecao.style.height = (e.pageY - 141 - inicio.y) + 'px';
+}
+
+img.addEventListener('mousedown', function(e) {
+    var rect = e.target.getBoundingClientRect();
+    inicio = {
+        x: e.pageX,
+        y: e.pageY
+    };
+    inicio.x = inicio.x - rect.left;
+    inicio.y = inicio.y - 141; //rect.top;
+    var altura = document.getElementById('uploadPreview').offsetHeight;
+    var largura = document.getElementById('uploadPreview').offsetWidth;
+    left_ = (inicio.x * 100 / largura);
+    top_ = (inicio.y * 100 / altura);
+    selecao.style.display = 'block';
+    selecao.style.left = inicio.x + 'px';
+    selecao.style.top = inicio.y + 'px';
+    selecao.style.width = 0;
+    selecao.style.height = 0;
+    window.addEventListener('mousemove', arrastador);
+});
+
+window.addEventListener('mouseup', function(e) {
+    inicio = null;
+    window.removeEventListener('mousemove', arrastador);
+});
+
+
+let pos;
+require(['jquery', 'jquery/ui'], function($) {
+    var url_prod = $("#link");
+    $('#add').on('click', function(e) {
+        if(img_motor === undefined){
+            img_motor = $('#uploadPreview').attr('src');
+        }
+        pos = selecao.getBoundingClientRect();
+        var entity_id_motor_ =  id_prod.value;
+        right = pos.right;
+        bottom = pos.bottom;
+        var valor_sku = sku.value;/**Código sku da peça */
+        $.ajax({
+            type: 'post',
+            url: url_prod,
+            data: {
+                entity_id_motor: `${entity_id_motor_}`,
+                sku: `${valor_sku}`,
+                left: `${left_}`,
+                top: `${top_}`,
+                left_b: `${right}`,
+                top_b: `${bottom}`,
+                mt_img: `${img_motor}`
+            },
+            error: function() {
+                alert('Erro ao tentar ação!');
+            },
+            success: function(retorno) {
+                var json = JSON.parse(retorno);
+                var x = 0;
+                tr = '';
+                while(x < json.length){
+                    tr += `
+                        <tr>
+                            <th><img src="${json[x].imagem}" style="width: 100px"></th>
+                            <th>${json[x].sku}</th>
+                            <th>${json[x].value}</th>
+                            <th>${json[x].request_path}</th>
+                            <th>${json[x].price}</th>
+                            <th><button type="button" class="btn btn-dark" onclick="DeleteProd(${json[x].diagrama_id});">Remover</button></th>
+                        </tr>
+                    `;
+                    x++;
+                }
+                gerarTabela(tr);
+            }
+        });
+    });
+
+    $('#id_prod').on('change', function(){
+        $.ajax({
+            type: 'post',
+            url: url_prod,
+            data: {
+                entity_id_motor: `${id_prod.value}`
+            },
+            error: function() {
+                alert('Erro ao tentar ação!');
+            },
+            success: function(retorno) {
+                var json = JSON.parse(retorno);
+                var x = 0;
+                tr = '';
+                while(x < json.length){
+                    if(json[x].mt_img != ''){
+                        $('#uploadPreview').attr('src', json[x].mt_img);
+                    }
+                    tr += `
+                        <tr>
+                            <th><img src="${json[x].imagem}" style="width: 100px"></th>
+                            <th>${json[x].sku}</th>
+                            <th>${json[x].value}</th>
+                            <th>${json[x].request_path}</th>
+                            <th>${json[x].price}</th>
+                            <th><button type="button" class="btn btn-dark" onclick="DeleteProd('${json[x].diagrama_id}',);">Remover</button></th>
+                        </tr>
+                    `;
+                    x++;
+                }
+                gerarTabela(tr);
+            }
+        });
+    });
+
+    $('#slv').on('click', function(){
+
+        if(img_motor === undefined){
+            img_motor = $('#uploadPreview').attr('src');
+        }
+        var url_prod = $("#link");
+        var id_motor_ =  id_prod.value;
+        var file_ = img_motor;
+        $.ajax({
+            type: 'post',
+            url: url_prod,
+            data: {
+                id_motor: `${id_motor_}`,
+                file_url: `${file_}`
+            },
+            error: function() {
+                alert('Erro ao tentar ação!');
+            },
+            success: function(retorno) {
+                console.log(retorno);
+            }
+        });
+    });
+});
+
+function DeleteProd(id){
+    require(['jquery', 'jquery/ui'], function($) {
+        var entity_id_motor_ =  id_prod.value;
+        var url_prod = $("#link");
+        $.ajax({
+            type: 'post',
+            url: url_prod,
+            data: {
+                deletar: 'true',
+                entity_id_motor: `${entity_id_motor_}`,
+                id: `${id}`
+            },
+            error: function(){
+
+            },
+            success: function(retorno){
+                var json = JSON.parse(retorno);
+                var x = 0;
+                tr = '';
+                while(x < json.length){
+                    tr += `
+                        <tr>
+                            <th><img src="${json[x].imagem}" style="width: 100px"></th>
+                            <th>${json[x].sku}</th>
+                            <th>${json[x].value}</th>
+                            <th>${json[x].request_path}</th>
+                            <th>${json[x].price}</th>
+                            <th><button type="button" class="btn btn-dark" onclick="DeleteProd('${json[x].diagrama_id}',);">Remover</button></th>
+                        </tr>
+                    `;
+                    x++;
+                }
+                gerarTabela(tr);
+            }
+        });
+    });
+}
+
+function gerarTabela(tr){
+    let tabela = document.getElementById('tabela');
+    var tabela_texto = `
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">Miniatura</th>
+            <th scope="col">SKU</th>
+            <th scope="col">Nome</th>
+            <th scope="col">URL</th>
+            <th scope="col">Preço</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            ${tr}
+        </tbody>
+    </table>
+    `;
+
+    tabela.innerHTML = tabela_texto;
+}
+</script>
