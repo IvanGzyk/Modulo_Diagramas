@@ -165,6 +165,15 @@ class Index extends \Magento\Backend\App\Action
                     '.$value['value'].'.style.backgroundColor = "#FFF";
                     btn_'.$value['sku'].'.style.fontSize = "1em";
                 });
+
+                btn_'.$value['sku'].'.addEventListener("mouseover", function(e) {
+                    '.$value['value'].'.style.backgroundColor = "#FAB600";
+                    btn_'.$value['sku'].'.style.fontSize = "2em";
+                });
+                btn_'.$value['sku'].'.addEventListener("mouseout", function(e) {
+                    '.$value['value'].'.style.backgroundColor = "#FFF";
+                    btn_'.$value['sku'].'.style.fontSize = "1em";
+                });
             ';
             $titulo_botao++;
         }
@@ -188,7 +197,7 @@ class Index extends \Magento\Backend\App\Action
         #imagem {
             position: relative;
             display: flex;
-            width: 60%;
+            width: 40%;
             margin-left: 20%;
         }
 
