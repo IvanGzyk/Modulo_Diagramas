@@ -11,7 +11,6 @@ class Index extends \Magento\Backend\App\Action
 {
 
     protected $resultPageFactory;
-    public $teste;
 
     /**
      * Constructor
@@ -474,7 +473,6 @@ class Index extends \Magento\Backend\App\Action
 
     public function execute()
     {
-        $this->teste = 'teste funcionou';
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->prepend(__('Diagramas'));
 
