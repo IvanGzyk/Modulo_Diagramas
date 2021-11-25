@@ -11,9 +11,6 @@ $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterfa
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
 $caminho = $baseURL_l.'pub/media/img/';
 ?>
-</div>
-</div>
-</div>
 <style>
     .selecionado{
         position: absolute;
@@ -77,9 +74,6 @@ $caminho = $baseURL_l.'pub/media/img/';
         display: none;
     }
 
-    /*form{
-        font-size: 1em;
-    }*/
 </style>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -100,18 +94,6 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
     </div>
 </div>
 <main id="anchor-content" class="page-content">
-<!--<div class="row">
-    <div style="text-align: center;">
-        <div class="col-12">
-            <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data" style="font-size: 1.5em;">
-                <div class="custom-file">
-                    <input id="uploadImage" type="file" class="custom-file-input" name="myPhoto" onchange="PreviewImage();" />
-                    <label id="label1" class="custom-file-label">Escolha uma Imagem</label>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>-->
 
 </br>
 <?php
@@ -200,7 +182,6 @@ function PreviewImage() {
     oFReader.onload = function(oFREvent) {
         document.getElementById("uploadPreview").src = oFREvent.target.result;
         document.getElementById("label1").innerHTML = 'Alterar Imagem';
-        //imagem.style.display = 'none';
     };
 };
 
@@ -224,8 +205,6 @@ require(['jquery', 'jquery/ui'], function($) {
         return false;
     });
 });
-
-
 
 /*** seleciona area da imagem e pega as coordenadas */
 let img = document.getElementById('uploadPreview');

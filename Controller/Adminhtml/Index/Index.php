@@ -108,7 +108,7 @@ class Index extends \Magento\Backend\App\Action
             $lista_produtos .= '
                     <tr class="'.$value['sku'].'">
                         <td><a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#table" >'.$titulo_botao.'</a></td>
-                        <td><img src="'.$value['imagem'].'" style="width: 5em"></td>
+                        <td><img id="img_'.$value['sku'].'" src="'.$value['imagem'].'" style="width: 5em; border-radius: 10%;"></td>
                         <td>'.$value['value'].'</td>
                         <td>'.$value['sku'].'</td>
                         <td>R$ '.$value['price'].'</td>
@@ -153,8 +153,10 @@ class Index extends \Magento\Backend\App\Action
                 </div>
             </div>";
 
-            $script .= '
+                $script .= '
                 let '.$value['value'].' = document.querySelector(".'.$value['sku'].'");
+                let _img_'.$value['sku'].' = document.querySelector("#img_'.$value['sku'].'");
+
                 let btn_'.$value['sku'].' = document.querySelector("#'.$value['sku'].'_");
                 '.$value['value'].'.addEventListener("mouseover", function(e) {
                     '.$value['value'].'.style.backgroundColor = "#FAB600";
@@ -168,10 +170,16 @@ class Index extends \Magento\Backend\App\Action
                 btn_'.$value['sku'].'.addEventListener("mouseover", function(e) {
                     '.$value['value'].'.style.backgroundColor = "#FAB600";
                     btn_'.$value['sku'].'.style.fontSize = "2em";
+                    _img_'.$value['sku'].'.style.width = "15em";
+                    _img_'.$value['sku'].'.style.border = "2px solid #FAB600";
+                    _img_'.$value['sku'].'.style.position = "absolute";
                 });
                 btn_'.$value['sku'].'.addEventListener("mouseout", function(e) {
                     '.$value['value'].'.style.backgroundColor = "#FFF";
                     btn_'.$value['sku'].'.style.fontSize = "1em";
+                    _img_'.$value['sku'].'.style.width = "5em";
+                    _img_'.$value['sku'].'.style.border = "0 solid #FAB600";
+                    _img_'.$value['sku'].'.style.position = "initial";
                 });
             ';
             $titulo_botao++;
@@ -195,17 +203,17 @@ class Index extends \Magento\Backend\App\Action
         }*/
         #imagem {
             position: relative;
-            display: flex;
+            display: inline-flex;
             width: 40%;
-            margin-left: 20%;
+            float: left;
         }
 
         #tb_prod{
             position: relative;
-            display: flex;
+            display: inline-flex;
             text-align: center;
             width: 100%;
-            margin-top: 5%;
+            float: right;
         }
 
         table{
@@ -218,8 +226,9 @@ class Index extends \Magento\Backend\App\Action
         }
 
         th {
-            background-color: #000;
+            background-color: #41362f;
             color: white;
+            text-align: center !important;
         }
 
         #view_img{
@@ -236,23 +245,34 @@ class Index extends \Magento\Backend\App\Action
         .modal-popup .modal-inner-wrap {
             text-align: center;
         }
+        @media only screen and (max-width: 576px) {
+            #imagem {
+                float: none;
+                width: 80%;
+                margin-left: 10%;
+            }
+          }
         </style>
-        <div id="imagem">
-            <img id="view_img" src="'.$file.'">
-        '.$texto_map.'
-        </div>
-        <div id="tb_prod">
-            <table>
-                <tr>
-                    <th>PÇ</th>
-                    <th>IMG</th>
-                    <th>Nome</th>
-                    <th>SKU</th>
-                    <th>Preço</th>
-                    <th></th>
-                </tr>
-                '.$lista_produtos.'
-            </table>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-12" id="imagem">
+                    <img id="view_img" src="'.$file.'">
+                '.$texto_map.'
+                </div>
+                <div class="col-md-8 col-12" id="tb_prod">
+                    <table>
+                        <tr>
+                            <th>PÇ</th>
+                            <th>IMG</th>
+                            <th>Nome</th>
+                            <th>SKU</th>
+                            <th>Preço</th>
+                            <th></th>
+                        </tr>
+                        '.$lista_produtos.'
+                    </table>
+                </div>
+            </div>
         </div>'.
         $popup.'
         <script>'.
