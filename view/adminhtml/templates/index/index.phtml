@@ -100,7 +100,7 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
     </div>
 </div>
 <main id="anchor-content" class="page-content">
-<div class="row">
+<!--<div class="row">
     <div style="text-align: center;">
         <div class="col-12">
             <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data" style="font-size: 1.5em;">
@@ -111,7 +111,7 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
             </form>
         </div>
     </div>
-</div>
+</div>-->
 
 </br>
 <?php
@@ -124,38 +124,48 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 ?>
 
 <div class="row">
-    <div class="col-12">
-        <form action="<?=$url?>">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <select class="form-control form_" id="id_prod">
-                        <?php
-                            echo "<option  value='null'>Escolha um Motor</option>";
-                        foreach($motor_diagrama as $value){
-                            $id = $value['entity_id'];
-                            $valor = $value['VALUE'];
-                            echo "<option  value='$id'>$valor</option>";
-                        }
-                        ?>
-                    </select>
+        <div class="col-md-4">
+            <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data" style="font-size: 1.5em;">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <input id="uploadImage" type="file" class="custom-file-input" name="myPhoto" onchange="PreviewImage();" />
+                        <label id="label1" class="custom-file-label">Escolha uma Imagem</label>
+                    </div>
                 </div>
-                <div class="form-group col-md-4 codigo">
-                    <input type="text" class="form-control form_" placeholder="CODIGO DA PEÇA (SKU)" name="sku" id="sku">
+            </form>
+        </div>
+        <div class="col-md-8">
+            <form action="<?=$url?>">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <select class="form-control form_" id="id_prod">
+                            <?php
+                                echo "<option  value='null'>Escolha um Motor</option>";
+                            foreach($motor_diagrama as $value){
+                                $id = $value['entity_id'];
+                                $valor = $value['VALUE'];
+                                echo "<option  value='$id'>$valor</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4 codigo">
+                        <input type="text" class="form-control form_" placeholder="CODIGO DA PEÇA (SKU)" name="sku" id="sku">
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="titulo" id="titulo">
+                        <input type="hidden" class="form-control" name="id" id="id">
+                        <input type="hidden" class="form-control" name="link" id="link">
+                        <input type="hidden" class="form-control" name="price" id="price">
+                        <input type="hidden" class="form-control" name="entity_id" id="entity_id">
+                    </div>
+                    <div class="form-group col-md-4 botoes">
+                        <button type="button" class="action- scalable action-secondary add" id="add">Adicionar</button>
+                        <button type="button" class="action-default primary" id="slv">Salvar</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="hidden" class="form-control" name="titulo" id="titulo">
-                    <input type="hidden" class="form-control" name="id" id="id">
-                    <input type="hidden" class="form-control" name="link" id="link">
-                    <input type="hidden" class="form-control" name="price" id="price">
-                    <input type="hidden" class="form-control" name="entity_id" id="entity_id">
-                </div>
-                <div class="form-group col-md-4 botoes">
-                    <button type="button" class="action- scalable action-secondary add" id="add">Adicionar</button>
-                    <button type="button" class="action-default primary" id="slv">Salvar</button>
-                </div>
-            </div>
-        </form><br>
-    </div>
+            </form>
+        </div>
 </div>
 <div class="row">
     <div class="col-12">
