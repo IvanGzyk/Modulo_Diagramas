@@ -426,25 +426,6 @@ function gerarTabela(tr){
     `;
     selecionado.innerHTML = div;
     tabela.innerHTML = tabela_texto;
-
-    while(qtd_sele >= 0){
-        const variavel = document.getElementById(qtd_sele)
-        variavel.addEventListener("mouseover", function(e){
-            alert(qtd_sele)
-        })
-        variavel.addEventListener("mouseout", function(e){
-            alert(qtd_sele)
-        })
-                /*btn_'.$value['sku'].'.addEventListener("mouseover", function(e) {
-                    '.$value['value'].'.style.backgroundColor = "#FAB600";
-                    btn_'.$value['sku'].'.style.fontSize = "2em";
-                });
-                btn_'.$value['sku'].'.addEventListener("mouseout", function(e) {
-                    '.$value['value'].'.style.backgroundColor = "#FFF";
-                    btn_'.$value['sku'].'.style.fontSize = "1em";
-                });*/
-        qtd_sele--
-    }
 }
 
 </script>
