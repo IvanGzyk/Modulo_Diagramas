@@ -106,158 +106,159 @@ class Index extends \Magento\Backend\App\Action
             $price = floatval($value['price']);
             $value['price'] = number_format($price,2,",",".");
             $lista_produtos .= '
-                    <tr class="'.$value['sku'].'">
-                        <td><a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#table" >'.$titulo_botao.'</a></td>
-                        <td><img id="img_'.$value['sku'].'" src="'.$value['imagem'].'" style="width: 5em; border-radius: 10%;"></td>
-                        <td>'.$value['value'].'</td>
-                        <td>'.$value['sku'].'</td>
-                        <td>R$ '.$value['price'].'</td>
-                        <td><a href="'.$value['request_path'].'" class="action primary">Comprar</a></td>
-                    </tr>';
+                        <tr class="'.$value['sku'].'">
+                            <td><a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#table" >'.$titulo_botao.'</a></td>
+                            <td><img id="img_'.$value['sku'].'" src="'.$value['imagem'].'" style="width: 5em; border-radius: 10%;"></td>
+                            <td>'.$value['value'].'</td>
+                            <td>'.$value['sku'].'</td>
+                            <td>R$ '.$value['price'].'</td>
+                            <td><a href="'.$value['request_path'].'" class="action primary">Comprar</a></td>
+                        </tr>';
 
             $texto_map .=  '
-            <a class="btn_img" id="'.$value['sku'].'_" alt="'.$value['value'].'" title="'.$value['value'].'" href="#imagem" style="left:'.$value['left'].'%; top:'.$value['top'].'%;">'.$titulo_botao.'</a>';
+                    <a class="btn_img" id="'.$value['sku'].'_" alt="'.$value['value'].'" title="'.$value['value'].'" href="#imagem" style="left:'.$value['left'].'%; top:'.$value['top'].'%;">'.$titulo_botao.'</a>';
 
             $popup .= '
-            <div data-bind="mageInit: {';
+        <div data-bind="mageInit: {';
             $popup .= "
-                'Magento_Ui/js/modal/modal':{
-                    'type': 'popup',
-                    'title': '".$value['value']."',
-                    'content': '[id=".$value['sku']."]',
-                    'trigger': '[alt=".$value['value']."]',
-                    'responsive': true,
-                    'modalClass': 'modal',
-                    'buttons': [{
-                        text: jQuery.mage.__('Fechar'),
-                        class: 'btn btn-primary'
-                    }, {
-                        text: jQuery.mage.__('Comprar'),
-                        class: 'btn btn-primary',
-                        click: function (event){
-                               window.open('".$value['request_path']."', '_blank');
-                        }
-                    }]
-                }
-            }".
-            '">';
+            'Magento_Ui/js/modal/modal':{
+                'type': 'popup',
+                'title': '".$value['value']."',
+                'content': '[id=".$value['sku']."]',
+                'trigger': '[alt=".$value['value']."]',
+                'responsive': true,
+                'modalClass': 'modal',
+                'buttons': [{
+                    text: jQuery.mage.__('Fechar'),
+                    class: 'btn btn-primary'
+                }, {
+                    text: jQuery.mage.__('Comprar'),
+                    class: 'btn btn-primary',
+                    click: function (event){
+                        window.open('".$value['request_path']."', '_blank');
+                    }
+                }]
+            }
+        }".'">';
             $popup .= "
-                <div id='".$value['sku']."' style='width: 100%; display: inline;'>
-                    <div style='width: 50%; display: inline;'>
-                        <a href='".$value['request_path']."'><img src='".$value['imagem']."' style='width: 100px'></a>
-                    </div>
-                    <div style='width: 50%; display: inline;'>
-                        <h3>".$value['sku']."</h3>
-                        <p>R$ ".$value['price']."</p>
-                    </div>
+            <div id='".$value['sku']."' style='width: 100%; display: inline;'>
+                <div style='width: 50%; display: inline;'>
+                    <a href='".$value['request_path']."'><img src='".$value['imagem']."' style='width: 100px'></a>
                 </div>
-            </div>";
+                <div style='width: 50%; display: inline;'>
+                    <h3>".$value['sku']."</h3>
+                    <p>R$ ".$value['price']."</p>
+                </div>
+            </div>
+        </div>";
 
-                $script .= '
-                let '.$value['value'].' = document.querySelector(".'.$value['sku'].'");
-                let _img_'.$value['sku'].' = document.querySelector("#img_'.$value['sku'].'");
+        $script .= '
+            let '.$value['value'].' = document.querySelector(".'.$value['sku'].'");
+            let _img_'.$value['sku'].' = document.querySelector("#img_'.$value['sku'].'");
 
-                let btn_'.$value['sku'].' = document.querySelector("#'.$value['sku'].'_");
-                '.$value['value'].'.addEventListener("mouseover", function(e) {
-                    '.$value['value'].'.style.backgroundColor = "#FAB600";
-                    btn_'.$value['sku'].'.style.fontSize = "2em";
-                });
-                '.$value['value'].'.addEventListener("mouseout", function(e) {
-                    '.$value['value'].'.style.backgroundColor = "#FFF";
-                    btn_'.$value['sku'].'.style.fontSize = "1em";
-                });
+            let btn_'.$value['sku'].' = document.querySelector("#'.$value['sku'].'_");
+            '.$value['value'].'.addEventListener("mouseover", function(e) {
+                '.$value['value'].'.style.backgroundColor = "#FAB600";
+                btn_'.$value['sku'].'.style.fontSize = "2em";
+            });
+            '.$value['value'].'.addEventListener("mouseout", function(e) {
+                '.$value['value'].'.style.backgroundColor = "#FFF";
+                btn_'.$value['sku'].'.style.fontSize = "1em";
+            });
 
-                btn_'.$value['sku'].'.addEventListener("mouseover", function(e) {
-                    '.$value['value'].'.style.backgroundColor = "#FAB600";
-                    btn_'.$value['sku'].'.style.fontSize = "2em";
-                    _img_'.$value['sku'].'.style.width = "15em";
-                    _img_'.$value['sku'].'.style.border = "2px solid #FAB600";
-                    _img_'.$value['sku'].'.style.position = "absolute";
-                });
-                btn_'.$value['sku'].'.addEventListener("mouseout", function(e) {
-                    '.$value['value'].'.style.backgroundColor = "#FFF";
-                    btn_'.$value['sku'].'.style.fontSize = "1em";
-                    _img_'.$value['sku'].'.style.width = "5em";
-                    _img_'.$value['sku'].'.style.border = "0 solid #FAB600";
-                    _img_'.$value['sku'].'.style.position = "initial";
-                });
+            btn_'.$value['sku'].'.addEventListener("mouseover", function(e) {
+                '.$value['value'].'.style.backgroundColor = "#FAB600";
+                btn_'.$value['sku'].'.style.fontSize = "2em";
+                _img_'.$value['sku'].'.style.width = "15em";
+                _img_'.$value['sku'].'.style.border = "2px solid #FAB600";
+                _img_'.$value['sku'].'.style.boxShadow = "9px 7px 5px #FAB600";
+                _img_'.$value['sku'].'.style.position = "absolute";
+            });
+            btn_'.$value['sku'].'.addEventListener("mouseout", function(e) {
+                '.$value['value'].'.style.backgroundColor = "#FFF";
+                btn_'.$value['sku'].'.style.fontSize = "1em";
+                _img_'.$value['sku'].'.style.width = "5em";
+                _img_'.$value['sku'].'.style.border = "0 solid #FAB600";
+                _img_'.$value['sku'].'.style.boxShadow = "none";
+                _img_'.$value['sku'].'.style.position = "initial";
+            });
             ';
             $titulo_botao++;
         }
         return '
         <style>
-        .btn_img{
-            position:absolute;
-            text-align: center;
-            background:#FAB600;
-            width:2em;
-            height:2em;
-            border-radius: 100%;
-            border: 1px #000 solid;
-            font-size: 1em;
-            font-weight: bold;
-            color: #000 !important;
-        }
-        /*.btn_img:before{
-            display:block;
-        }*/
-        #imagem {
-            position: relative;
-            display: inline-flex;
-            width: 40%;
-            float: left;
-        }
-
-        #tb_prod{
-            position: relative;
-            display: inline-flex;
-            text-align: center;
-            width: 100%;
-            float: right;
-        }
-
-        table{
-            width: 100%;
-        }
-
-        th, td {
-            border-bottom: 1px solid #ddd;tr:
-            hover {background-color: #FAB600;}
-        }
-
-        th {
-            background-color: #41362f;
-            color: white;
-            text-align: center !important;
-        }
-
-        #view_img{
-            width: 100%;
-            height: auto;
-        }
-        .value{
-            display: block !important;
-        }
-        .modal{
-            display: block !important;
-            text-align: center;
-        }
-        .modal-popup .modal-inner-wrap {
-            text-align: center;
-        }
-        @media only screen and (max-width: 576px) {
-            #imagem {
-                float: none;
-                width: 80%;
-                margin-left: 10%;
+            .btn_img{
+                position:absolute;
+                text-align: center;
+                background:#FAB600;
+                width:2em;
+                height:2em;
+                border-radius: 100%;
+                border: 1px #000 solid;
+                font-size: 1em;
+                font-weight: bold;
+                color: #000 !important;
             }
-          }
+            /*.btn_img:before{
+                display:block;
+            }*/
+            #imagem {
+                position: relative;
+                display: inline-flex;
+                width: 40%;
+                float: left;
+            }
+
+            #tb_prod{
+                position: relative;
+                display: inline-flex;
+                text-align: center;
+                width: 100%;
+                float: right;
+            }
+
+            table{
+                width: 100%;
+            }
+
+            th, td {
+                border-bottom: 1px solid #ddd;tr:
+                hover {background-color: #FAB600;}
+            }
+
+            th {
+                background-color: #41362f;
+                color: white;
+                text-align: center !important;
+            }
+
+            #view_img{
+                width: 100%;
+                height: auto;
+            }
+            .value{
+                display: block !important;
+            }
+            .modal{
+                display: block !important;
+                text-align: center;
+            }
+            .modal-popup .modal-inner-wrap {
+                text-align: center;
+            }
+            @media only screen and (max-width: 576px) {
+                #imagem {
+                    float: none;
+                    width: 80%;
+                    margin-left: 10%;
+                }
+            }
         </style>
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-12" id="imagem">
                     <img id="view_img" src="'.$file.'">
-                '.$texto_map.'
+                    '.$texto_map.'
                 </div>
                 <div class="col-md-8 col-12" id="tb_prod">
                     <table>
@@ -269,7 +270,7 @@ class Index extends \Magento\Backend\App\Action
                             <th>Preço</th>
                             <th></th>
                         </tr>
-                        '.$lista_produtos.'
+                            '.$lista_produtos.'
                     </table>
                 </div>
             </div>
